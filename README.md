@@ -2,7 +2,7 @@
 
 ## Overview
 
-SpaceX Upcoming Launches Blazor is a web application built using Blazor, providing users with information about the upcoming launches by SpaceX. It offers a streamlined interface to explore details such as launch date, mission name, and launch site.
+SpaceX Upcoming Launches Blazor is a web application built using Blazor, providing users with information about the upcoming launches by Launch Library 2 to filter by SpaceX. It offers a streamlined interface to explore details such as launch date, mission name, and launch site.
 
 ## Features
 
