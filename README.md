@@ -1,4 +1,4 @@
-### SpaceX Upcoming Launches Blazor
+# SpaceX Upcoming Launches Blazor
 
 ## Overview
 
