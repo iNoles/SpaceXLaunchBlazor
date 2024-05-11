@@ -1,0 +1,44 @@
+﻿@page "/"
+@inject IHttpClientFactory ClientFactory
+<PageTitle>SpaceX Launch</PageTitle>
+
+<h1>Upcoming SpaceX Launches</h1>
+
+@if (_launches == null)
+{
+<p>Loading...</p>
+}
+else
+{
+<table class="table">
+    <thead>
+    <tr>
+        <th>Rocket Name</th>
+        <th>Launch Date</th>
+        <th>Status</th>
+        <th>Location</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var launch in _launches)
+    {
+    <tr>
+        <td>@launch.name.</td>
+        <td>@launch.net.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+        <td>@launch.status.abbrev</td>
+        <td>@launch.location</td>
+    </tr>
+    }
+    </tbody>
+</table>
+}
+
+@code {
+    private List<Result>? _launches;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = ClientFactory.CreateClient();
+        _launches = await new SpaceXLaunchService(client).GetUpcomingLaunchesAsync();
+    }
+}
