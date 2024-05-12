@@ -13,7 +13,7 @@ SpaceX Upcoming Launches Blazor is a web application built using Blazor, providi
 
 - **Blazor**: Frontend framework for building interactive web UIs using C#.
 - **ASP.NET Core**: Backend framework for building web APIs and services.
-- **SpaceX API**: Integration with the official Launch Library 2 API for real-time SpaceX launch data.
+- **Launch Library 2 API**: Integration with the official Launch Library 2 API for real-time SpaceX launch data.
 - **HTML/CSS**: Frontend styling and layout.
 - **Bootstrap**: Frontend component library for responsive design.
 
