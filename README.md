@@ -2,7 +2,7 @@
 
 ## Overview
 
-SpaceX Upcoming Launches Blazor is a web application built using Blazor, providing users with information about the upcoming launches by Launch Library 2 to filter by SpaceX. It offers a streamlined interface to explore details such as launch date, mission name, and launch site.
+SpaceX Upcoming Launches Blazor is a web application built using Blazor, providing users with information about the upcoming launches by Launch Library 2 to filter by SpaceX. It offers a streamlined interface to explore the launch date, mission name, status, and location.
 
 ## Features
 
@@ -23,8 +23,8 @@ To get started with SpaceX Upcoming Launches Blazor, follow these steps:
 
 1. **Clone the Repository**: `git clone https://github.com/your-username/SpaceX-Upcoming-Launches-Blazor.git`
 2. **Navigate to the Directory**: `cd SpaceX-Upcoming-Launches-Blazor`
-3. **Install Dependencies**: `dotnet restore`
-4. **Run the Application**: `dotnet run`
+3. **Install Dependencies**: `dotnet restore --project SpaceXLaunchBlazorApp`
+4. **Run the Application**: `dotnet run --project SpaceXLaunchBlazorApp`
 5. **Open Your Browser**: Navigate to `https://localhost:5001` to view the application.
 
 ## Contributing
