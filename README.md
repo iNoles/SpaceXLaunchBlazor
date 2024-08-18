@@ -29,7 +29,7 @@ To get started with SpaceX Upcoming Launches Blazor, follow these steps:
 
 ## Contributing
 
-Contributions are welcome! To contribute to SpaceX Upcoming Launches Blazor, follow these steps:
+Contributions are welcome! To contribute to SpaceX's Upcoming Launches Blazor, follow these steps:
 
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature-name`).
