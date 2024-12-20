@@ -1,15 +1,19 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <main>
-        <article class="content px-4">
+<div class="min-h-screen bg-gray-100">
+    <main class="py-8">
+        <article class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
             @Body
         </article>
     </main>
 </div>
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>
+<!--<div id="blazor-error-ui" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-4 rounded-lg shadow-lg">
+        An unhandled error has occurred.
+        <div class="mt-4">
+            <a href="" class="text-blue-500">Reload</a>
+            <button class="ml-4 text-gray-500 hover:text-black dismiss">Ok</button>
+        </div>
+    </div>
+</div>-->

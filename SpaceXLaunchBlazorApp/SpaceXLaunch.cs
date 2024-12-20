@@ -2,20 +2,20 @@ namespace SpaceXLaunchBlazorApp;
 
 public class SpaceXLaunch
 {
-    public string next { get; set; }
-    public object previous { get; set; }
-    public List<Result> results { get; set; }
+    public string? Next { get; set; }
+    public object? Previous { get; set; }
+    public List<Result>? Results { get; set; }
 }
 
 public class Result
 {
-    public string name { get; set; }
-    public string location { get; set; }
-    public DateTime net { get; set; }
-    public Status status { get; set; }
+    public string? Name { get; set; }
+    public string? Location { get; set; }
+    public DateTime? Net { get; set; }
+    public Status? Status { get; set; }
 }
 
 public class Status
 {
-    public string abbrev { get; set; }
+    public string? Abbrev { get; set; }
 }

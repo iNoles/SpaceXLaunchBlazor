@@ -2,35 +2,35 @@
 @inject IHttpClientFactory ClientFactory
 <PageTitle>SpaceX Launch</PageTitle>
 
-<h1>Upcoming SpaceX Launches</h1>
+<h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Upcoming SpaceX Launches</h1>
 
 @if (_launches == null)
 {
-<p>Loading...</p>
+    <p class="text-center text-gray-500">Loading...</p>
 }
 else
 {
-<table class="table">
-    <thead>
-    <tr>
-        <th>Rocket Name</th>
-        <th>Launch Date</th>
-        <th>Status</th>
-        <th>Location</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var launch in _launches)
-    {
-    <tr>
-        <td>@launch.name.</td>
-        <td>@launch.net.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
-        <td>@launch.status.abbrev</td>
-        <td>@launch.location</td>
-    </tr>
-    }
-    </tbody>
-</table>
+    <table class="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
+        <thead class="bg-gray-800 text-white">
+            <tr>
+                <th class="px-4 py-2 text-left">Rocket Name</th>
+                <th class="px-4 py-2 text-left">Launch Date</th>
+                <th class="px-4 py-2 text-left">Status</th>
+                <th class="px-4 py-2 text-left">Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var launch in _launches)
+            {
+                <tr class="border-t hover:bg-gray-100">
+                    <td class="px-4 py-2">@launch.Name</td>
+                    <td class="px-4 py-2">@launch.Net?.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                    <td class="px-4 py-2">@launch.Status?.Abbrev</td>
+                    <td class="px-4 py-2">@launch.Location</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 @code {
