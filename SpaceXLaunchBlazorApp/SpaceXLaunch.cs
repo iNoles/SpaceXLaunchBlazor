@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components.Routing;
+
 namespace SpaceXLaunchBlazorApp;
 
 public class SpaceXLaunch
@@ -10,12 +12,20 @@ public class SpaceXLaunch
 public class Result
 {
     public string? Name { get; set; }
-    public string? Location { get; set; }
     public DateTime? Net { get; set; }
     public Status? Status { get; set; }
+    public Pad? Pad { get; set; }
 }
 
 public class Status
 {
-    public string? Abbrev { get; set; }
+    public string? Name { get; set; }
+}
+
+public class Pad {
+    public Location? Location { get; set; }
+}
+
+public class Location {
+    public string? Name { get; set; }
 }

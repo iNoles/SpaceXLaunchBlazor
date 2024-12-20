@@ -1,10 +1,13 @@
 ﻿@page "/"
-@inject IHttpClientFactory ClientFactory
+@inject HttpClient Http
 <PageTitle>SpaceX Launch</PageTitle>
 
 <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Upcoming SpaceX Launches</h1>
 
-@if (_launches == null)
+<!-- Note about Eastern Time -->
+<p class="text-center text-gray-500 mb-4">All times are displayed in Eastern Time (America/New_York).</p>
+
+@if (launches?.Results == null)
 {
     <p class="text-center text-gray-500">Loading...</p>
 }
@@ -20,13 +23,13 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var launch in _launches)
+            @foreach (var launch in launches?.Results ?? [])
             {
                 <tr class="border-t hover:bg-gray-100">
                     <td class="px-4 py-2">@launch.Name</td>
-                    <td class="px-4 py-2">@launch.Net?.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="px-4 py-2">@launch.Status?.Abbrev</td>
-                    <td class="px-4 py-2">@launch.Location</td>
+                    <td class="px-4 py-2">@GetEasternTime(launch.Net).ToString("yyyy-MM-dd hh:mm tt")</td>
+                    <td class="px-4 py-2">@launch.Status?.Name</td>
+                    <td class="px-4 py-2">@launch.Pad?.Location?.Name</td>
                 </tr>
             }
         </tbody>
@@ -34,11 +37,28 @@ else
 }
 
 @code {
-    private List<Result>? _launches;
+    private SpaceXLaunch? launches;
 
     protected override async Task OnInitializedAsync()
     {
-        var client = ClientFactory.CreateClient();
-        _launches = await new SpaceXLaunchService(client).GetUpcomingLaunchesAsync();
+        // Example API call (adjust URL as needed)
+        launches = await Http.GetFromJsonAsync<SpaceXLaunch>("https://lldev.thespacedevs.com/2.3.0/launches/upcoming?format=json&search=SpaceX");
+    }
+
+    // Method to convert UTC to "America/New_York" time zone
+    private DateTime GetEasternTime(DateTime? utcDateTime)
+    {
+        if (utcDateTime.HasValue)
+        {
+            TimeZoneInfo easternTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
+            DateTime utcDateTimeValue = utcDateTime.Value;
+
+            // Convert the UTC time to Eastern Time
+            DateTime easternTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTimeValue, easternTimeZone);
+
+            return easternTime;
+        }
+
+        return DateTime.MinValue; // Return default value if no date
     }
 }
