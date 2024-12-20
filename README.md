@@ -2,20 +2,20 @@
 
 ## Overview
 
-SpaceX Upcoming Launches Blazor is a web application built using Blazor, providing users with information about the upcoming launches by Launch Library 2 to filter by SpaceX. It offers a streamlined interface to explore the launch date, mission name, status, and location.
+**SpaceX Upcoming Launches Blazor** is a web application built with Blazor, providing users with information on upcoming SpaceX launches from the Launch Library 2 API. It features a streamlined interface to view launch dates, mission names, statuses, and locations.
 
 ## Features
 
-- **Upcoming Launches**: Display a list of upcoming SpaceX launches.
-- **Responsive Design**: Ensures a seamless user experience across devices.
+- **Upcoming Launches**: List of upcoming SpaceX launches with key details.
+- **Responsive Design**: Fully responsive UI that works seamlessly on all devices.
 
 ## Technologies Used
 
-- **Blazor**: Frontend framework for building interactive web UIs using C#.
-- **ASP.NET Core**: Backend framework for building web APIs and services.
-- **Launch Library 2 API**: Integration with the official Launch Library 2 API for real-time SpaceX launch data.
-- **HTML/CSS**: Frontend styling and layout.
-- **Bootstrap**: Frontend component library for responsive design.
+- **Blazor**: A powerful framework for building interactive web UIs using C#.
+- **ASP.NET Core**: The backend framework for building APIs and services.
+- **Launch Library 2 API**: Real-time integration for SpaceX launch data.
+- **TailwindCSS**: Utility-first CSS framework for custom, responsive design.
+- **HTML/CSS**: Used for basic layout and styling.
 
 ## Getting Started
 
