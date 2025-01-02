@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build:css": "npx tailwindcss -i ./SpaceXLaunchBlazorApp/wwwroot/tailwind.css -o ./SpaceXLaunchBlazorApp/wwwroot/app.css"
+    "build:css": "npx tailwindcss -i ./SpaceXLaunchBlazorApp/wwwroot/tailwind.css -o ./SpaceXLaunchBlazorApp/wwwroot/app.css --minify"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.0.0-beta.8",
