@@ -1,0 +1,27 @@
+# .editorconfig (C# default style)
+
+root = true
+
+[*.cs]
+indent_style = space
+indent_size = 4
+charset = utf-8-bom
+insert_final_newline = true
+end_of_line = crlf
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = true
+
+# Naming conventions
+dotnet_naming_rule.interface_should_be_prefixed_with_I.severity = suggestion
+dotnet_naming_rule.interface_should_be_prefixed_with_I.symbols = interface
+dotnet_naming_rule.interface_should_be_prefixed_with_I.style = prefix_I
+
+dotnet_naming_symbols.interface.applicable_kinds = interface
+dotnet_naming_symbols.interface.applicable_accessibilities = *
+dotnet_naming_symbols.interface.required_modifiers = *
+
+dotnet_naming_style.prefix_I.required_prefix = I
+dotnet_naming_style.prefix_I.capitalization = pascal_case
+
+# Optional: treat warnings as errors in CI
+dotnet_analyzer_diagnostic.severity = error
