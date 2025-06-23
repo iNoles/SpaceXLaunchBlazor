@@ -1,5 +1,5 @@
 # Use .NET 9 SDK for building the application
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0.301 AS build
 WORKDIR /app
 
 # Copy project file and restore dependencies
@@ -14,7 +14,7 @@ COPY SpaceXLaunchBlazorApp/ .
 RUN dotnet publish -c Release -o /out
 
 # Use .NET 9 runtime for running the app
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0.6 AS runtime
 WORKDIR /app
 
 # Copy the published output from the build stage
