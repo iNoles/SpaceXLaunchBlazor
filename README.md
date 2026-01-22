@@ -35,6 +35,9 @@ Blazor Server enables seamless integration between frontend UI and backend logic
 - TailwindCSS
 - Launch Library 2 API
 
+## Screenshot
+![Main](spacex.png)
+
 ## Getting Started
 
 To get started with SpaceX Upcoming Launches Blazor, follow these steps:
