@@ -1,25 +1,33 @@
 using SpaceXLaunchBlazorApp.Components;
+using SpaceXLaunchBlazorApp.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents()
-    .Services.AddHttpClient();
+// Razor Components + Blazor Server
+builder.Services
+    .AddRazorComponents()
+    .AddInteractiveServerComponents();
 
-var app = builder.Build();
+// HttpClient for Launch Library API
+builder.Services.AddHttpClient<LaunchLibraryService>(client =>
+{
+    client.BaseAddress = new Uri("https://ll.thespacedevs.com/2.3.0/");
+});
 
-// Configure the HTTP request pipeline.
+// Optional but recommended
+builder.Services.AddResponseCompression();
+
+WebApplication app = builder.Build();
+
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    _ = app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    _ = app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
+app.UseResponseCompression();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
