@@ -1,9 +1,10 @@
 {
-  "scripts": {
-    "build:css": "npx tailwindcss -i ./SpaceXLaunchBlazorApp/tailwind.css -o ./SpaceXLaunchBlazorApp/wwwroot/app.css --minify"
-  },
-  "dependencies": {
-    "@tailwindcss/cli": "^4.1.10",
-    "tailwindcss": "^4.1.10"
-  }
+    "scripts": {
+        "watch:css": "bunx @tailwindcss/cli -i SpaceXLaunchBlazorApp/wwwroot/tailwind.css -o SpaceXLaunchBlazorApp/wwwroot/app.min.css --watch --content './SpaceXLaunchBlazorApp/Components/**/*.razor'",
+        "build:css": "bunx @tailwindcss/cli -i SpaceXLaunchBlazorApp/wwwroot/tailwind.css -o SpaceXLaunchBlazorApp/wwwroot/app.min.css --minify --content './SpaceXLaunchBlazorApp/Components/**/*.razor'"
+    },
+    "dependencies": {
+        "@tailwindcss/cli": "^4.1.18",
+        "tailwindcss": "^4.1.18"
+    }
 }

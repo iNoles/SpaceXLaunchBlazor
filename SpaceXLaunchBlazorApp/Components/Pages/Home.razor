@@ -1,64 +1,94 @@
 ﻿@page "/"
-@inject HttpClient Http
-<PageTitle>SpaceX Launch</PageTitle>
+@using SpaceXLaunchBlazorApp.Models
+@using SpaceXLaunchBlazorApp.Services
+@inject LaunchLibraryService LaunchService
 
-<h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Upcoming SpaceX Launches</h1>
+<PageTitle>SpaceX Launches</PageTitle>
 
-<!-- Note about Eastern Time -->
-<p class="text-center text-gray-500 mb-4">All times are displayed in Eastern Time (America/New_York).</p>
+<header class="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-4 shadow-lg mb-10 flex items-center justify-between px-6">
+    <h1 class="text-3xl md:text-4xl font-bold">Upcoming SpaceX Launches</h1>
+    <span class="text-gray-300 hidden md:inline">All times shown in Eastern Time</span>
+</header>
 
-@if (launches?.Results == null)
+@if (launches == null || !launches.Any())
 {
-    <p class="text-center text-gray-500">Loading...</p>
+    <p class="text-center text-gray-500">Loading launches...</p>
 }
 else
 {
-    <table class="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
-        <thead class="bg-gray-800 text-white">
-            <tr>
-                <th class="px-4 py-2 text-left">Rocket Name</th>
-                <th class="px-4 py-2 text-left">Launch Date</th>
-                <th class="px-4 py-2 text-left">Status</th>
-                <th class="px-4 py-2 text-left">Location</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var launch in launches?.Results ?? [])
-            {
-                <tr class="border-t hover:bg-gray-100">
-                    <td class="px-4 py-2">@launch.Name</td>
-                    <td class="px-4 py-2">@GetEasternTime(launch.Net).ToString("yyyy-MM-dd hh:mm tt")</td>
-                    <td class="px-4 py-2">@launch.Status?.Name</td>
-                    <td class="px-4 py-2">@launch.Pad?.Location?.Name</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    @foreach (var launch in launches)
+    {
+         var countdown = GetCountdown(launch.Net);
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <img src="@GetLaunchImage(launch)" alt="@launch.Name" class="w-full h-48 object-cover" />
+            <div class="p-6">
+                <h2 class="text-lg font-semibold mb-1">@launch.Name</h2>
+                <p class="text-sm text-gray-600 mb-3">@launch.Mission?.Description</p>
+                <div class="text-sm space-y-1">
+                    <p><span class="font-medium">Launch Pad:</span> @launch.Pad?.Location?.Name</p>
+                    <p><span class="font-medium">Launch Date:</span> @GetEasternTimeString(launch.Net)</p>
+                </div>
+                @if (countdown == "Launched")
+                {
+                    <span class="inline-block bg-gray-400 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                        Launched
+                    </span>
+                }
+                else if (IsLaunchSoon(launch.Net))
+                {
+                    <span class="inline-block bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                        Launching Soon
+                    </span>
+                }
+                else
+                {
+                    <p class="font-mono text-sm text-gray-900 bg-gray-100 rounded px-2 py-1 inline-block mb-3">
+                        Countdown: @countdown
+                    </p>
+                }
+            </div>
+        </div>
+    }
+    </div>
 }
 
-@code {
-    private SpaceXLaunch? launches;
+@code
+{
+    private List<Launch> launches = new();
+    
+    private Timer? _timer;
 
     protected override async Task OnInitializedAsync()
     {
-        // Example API call (adjust URL as needed)
-        launches = await Http.GetFromJsonAsync<SpaceXLaunch>("https://lldev.thespacedevs.com/2.3.0/launches/upcoming?format=json&search=SpaceX");
+        launches = await LaunchService.GetUpcomingSpaceXLaunchesAsync();
+
+        _timer = new Timer(_ =>
+            InvokeAsync(StateHasChanged), null, 0, 1000);
     }
 
-    // Method to convert UTC to "America/New_York" time zone
-    private DateTime GetEasternTime(DateTime? utcDateTime)
+    public void Dispose() => _timer?.Dispose();
+
+    private string GetEasternTimeString(DateTimeOffset? net)
     {
-        if (utcDateTime.HasValue)
-        {
-            TimeZoneInfo easternTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
-            DateTime utcDateTimeValue = utcDateTime.Value;
-
-            // Convert the UTC time to Eastern Time
-            DateTime easternTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTimeValue, easternTimeZone);
-
-            return easternTime;
-        }
-
-        return DateTime.MinValue; // Return default value if no date
+        if (!net.HasValue) return "TBD";
+        var tzId = OperatingSystem.IsWindows() ? "Eastern Standard Time" : "America/New_York";
+        var tz = TimeZoneInfo.FindSystemTimeZoneById(tzId);
+        return TimeZoneInfo.ConvertTime(net.Value.UtcDateTime, TimeZoneInfo.Utc, tz)
+                             .ToString("yyyy-MM-dd hh:mm tt");
     }
+
+    private string GetCountdown(DateTimeOffset? net)
+    {
+        if (!net.HasValue) return "TBD";
+        var remaining = net.Value - DateTimeOffset.UtcNow;
+        if (remaining.TotalSeconds <= 0) return "Launched";
+        return $"{remaining.Days}d {remaining.Hours}h {remaining.Minutes}m {remaining.Seconds}s";
+    }
+
+    private bool IsLaunchSoon(DateTimeOffset? net)
+        => net.HasValue && (net.Value - DateTimeOffset.UtcNow).TotalMinutes <= 60;
+
+    private string GetLaunchImage(Launch launch)
+        => launch.Image?.ThumbnailUrl ?? "/images/F9_2_mobile.jpg";
 }
