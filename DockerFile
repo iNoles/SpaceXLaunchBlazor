@@ -1,27 +1,28 @@
-# Use .NET 9 SDK for building the application
-FROM mcr.microsoft.com/dotnet/sdk:9.0.301 AS build
-WORKDIR /app
+# Stage 1: Build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
 
-# Copy project file and restore dependencies
-COPY SpaceXLaunchBlazorApp/SpaceXLaunchBlazorApp.csproj SpaceXLaunchBlazorApp/
-WORKDIR /app/SpaceXLaunchBlazorApp
+# Copy csproj and restore first (Docker cache-friendly)
+COPY SpaceXLaunchBlazorApp/SpaceXLaunchBlazorApp.csproj ./SpaceXLaunchBlazorApp/
+WORKDIR /src/SpaceXLaunchBlazorApp
 RUN dotnet restore
 
-# Copy the entire project
-COPY SpaceXLaunchBlazorApp/ .
+# Copy the full project and publish
+COPY SpaceXLaunchBlazorApp/ ./
+RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
 
-# Publish the Blazor Server app
-RUN dotnet publish -c Release -o /out
-
-# Use .NET 9 runtime for running the app
-FROM mcr.microsoft.com/dotnet/aspnet:9.0.6 AS runtime
+# Stage 2: Runtime (Distroless)
+FROM gcr.io/distroless/dotnet10:runtime AS runtime
 WORKDIR /app
 
-# Copy the published output from the build stage
-COPY --from=build /out .
+# Set ASP.NET Core to listen on all interfaces
+ENV ASPNETCORE_URLS=http://+:8080
 
-# Expose port 8080
+# Copy published output from build stage
+COPY --from=build /app/publish .
+
+# Expose port
 EXPOSE 8080
 
-# Run the Blazor Server app
-CMD ["dotnet", "SpaceXLaunchBlazorApp.dll"]
+# Run the app
+ENTRYPOINT ["SpaceXLaunchBlazorApp.dll"]

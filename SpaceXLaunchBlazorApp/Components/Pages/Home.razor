@@ -57,17 +57,23 @@ else
 {
     private List<Launch> launches = new();
     
-    private Timer? _timer;
+    private PeriodicTimer? _ticker;
+    private CancellationTokenSource? _cts;
 
     protected override async Task OnInitializedAsync()
     {
         launches = await LaunchService.GetUpcomingSpaceXLaunchesAsync();
 
-        _timer = new Timer(_ =>
-            InvokeAsync(StateHasChanged), null, 0, 1000);
+        _cts = new CancellationTokenSource();
+        _ticker = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        _ = RunTickerAsync(_cts.Token);
     }
 
-    public void Dispose() => _timer?.Dispose();
+    public void Dispose() {
+        _cts?.Cancel();
+        _ticker?.Dispose();
+        _cts?.Dispose();
+    }
 
     private string GetEasternTimeString(DateTimeOffset? net)
     {
@@ -84,6 +90,23 @@ else
         var remaining = net.Value - DateTimeOffset.UtcNow;
         if (remaining.TotalSeconds <= 0) return "Launched";
         return $"{remaining.Days}d {remaining.Hours}h {remaining.Minutes}m {remaining.Seconds}s";
+    }
+
+    private async Task RunTickerAsync(CancellationToken token)
+    {
+        if (_ticker == null) return;
+
+        try
+        {
+            while (await _ticker.WaitForNextTickAsync(token))
+            {
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Timer was canceled, exit gracefully
+        }
     }
 
     private bool IsLaunchSoon(DateTimeOffset? net)
