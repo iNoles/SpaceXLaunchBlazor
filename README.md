@@ -1,8 +1,9 @@
-# SpaceX Upcoming Launches
+# SpaceX Launch Tracker
 
-SpaceX Upcoming Launches Blazor is a full-stack web application built with Blazor Server and ASP.NET Core. It provides real-time information about upcoming SpaceX launches using data sourced from the Launch Library 2 API.
+A real-time dashboard for tracking upcoming SpaceX launches, built with Blazor Server and ASP.NET Core.
 
-The application features a clean, responsive UI and allows users to explore launch schedules, mission details, launch statuses, and locations.
+It displays live launch data including mission details, schedules, locations, and status updates using the Launch Library 2 API.
+
 ## Features
 - **Upcoming Launches**: Displays a detailed list of SpaceX's upcoming launches, including:  
   - Launch date and time  
